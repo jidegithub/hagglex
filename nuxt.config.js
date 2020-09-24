@@ -1,6 +1,11 @@
 export default {
   generate: {
-    fallback: true
+    fallback: true,
+    routes: [
+      '/protected/home',
+      '/protected/protected',
+      '/protected/verify'
+    ]
   },
   // Target (https://go.nuxtjs.dev/config-target)
   target: 'static',
