@@ -62,7 +62,7 @@
           <input
             type="text"
             name="phonenumber"
-            placeholder="phonenumber"
+            placeholder="phone number"
             v-model="phonenumber"
             required
           />
@@ -91,17 +91,18 @@
             :disabled="disable"
             type="submit"
             value="Sign Up"
+            :class="toDisable"
           />
         </div>
       </form>
       <div>
         <p v-if="mode == 'login'">
           Don't have an account?
-          <a @click="switchMode('signup')" href="">Sign up</a>
+          <a @click="switchMode('signup')" href="#">Sign up</a>
         </p>
         <p v-if="mode == 'signup'">
           Already have an account?
-          <a @click="switchMode('login')" href="">Log in</a>
+          <a @click="switchMode('login')" href="#">Log in</a>
         </p>
       </div>
     </div>
@@ -156,7 +157,6 @@ export default {
       }
     },
     handleFormSubmit() {
-      this.disable = true;
       if (this.mode == "signup") {
         this.disable = true;
         this.$apollo
@@ -198,10 +198,15 @@ export default {
             },
           })
           .then((response) => {
-            const { login } = response.data;
+            this.disable = false;
+            const { register } = response.data;
             this.notificationMsg = "user created";
+            this.$store.commit("changeAccessToken", register.token);
             this.$store.commit("setAuth", true);
-            this.$router.push("./protected/verify");
+            setTimeout(() => {
+              this.notificationMsg = "";
+              this.$router.push("./protected/verify");
+            }, 900);
           });
       } else if (this.mode == "login") {
         this.disable = true;

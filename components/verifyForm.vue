@@ -19,6 +19,7 @@
           d="M215 214.9c-83.6 123.5-137.3 200.8-137.3 275.9 0 75.2 61.4 136.1 137.3 136.1s137.3-60.9 137.3-136.1c0-75.1-53.7-152.4-137.3-275.9z"
         />
       </svg>
+      <h4 v-if="notificationMsg">{{ notificationMsg }}</h4>
       <h2 class="title">grauth</h2>
 
       <form @submit.prevent="VerifyCode" action="" method="post" class="form">
@@ -53,6 +54,7 @@ export default {
   data() {
     return {
       code: "",
+      notificationMsg,
     };
   },
   computed: {
@@ -117,6 +119,7 @@ export default {
           .then((response) => {
             const { resendVerificationCode } = response.data;
             if (resendVerificationCode) {
+              this.notificationMsg = "verification code sent";
               console.log(response);
             }
           })

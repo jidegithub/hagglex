@@ -10,6 +10,7 @@ export const mutations = {
   },
   changeAccessToken(state, accessToken) {
     state.accessToken = accessToken;
+    localStorage.setItem('accessToken', state.accessToken)
   },
   logout(state) {
     state.accessToken = null;
@@ -18,6 +19,7 @@ export const mutations = {
   },
   setAuth(state, status) {
     state.isAuthenticated = status;
+    localStorage.setItem('Authenticated', state.isAuthenticated)
   }
 }
 
@@ -27,6 +29,7 @@ export const actions = {
   },
   logout({ commit }) {
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('Authenticated');
     commit('logout');
     this.$router.push('/');
   }
