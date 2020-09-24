@@ -8,7 +8,8 @@ export default {
   name:"index",
   data(){
     return {
-      mode: "login"
+      mode: "login",
+      currentUser: {}
     }
   },
   components:{

@@ -3,3 +3,7 @@ export async function onLogin(something, token){
     localStorage.setItem(AUTH_TOKEN, token)
   }
 }
+
+export async function checkVerificationStatus(user){
+  
+}

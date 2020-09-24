@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <Header/>
     <div>
       <Logo />
       <h1 class="title">
@@ -28,14 +29,21 @@
 </template>
 
 <script>
-export default {}
+import Header from "../../components/header"
+import { mapGetters } from 'vuex'
+export default {
+  name:"protected",
+  components:{
+    Header
+  }
+}
 </script>
 
 <style>
 .container {
   margin: 0 auto;
   min-height: 100vh;
-  display: flex;
+  /* display: flex; */
   justify-content: center;
   align-items: center;
   text-align: center;

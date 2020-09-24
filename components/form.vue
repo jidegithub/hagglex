@@ -1,177 +1,230 @@
 <template>
   <div class="grid align__item">
     <div class="register">
-      <svg xmlns="http://www.w3.org/2000/svg" class="site__logo" width="56" height="84" viewBox="77.7 214.9 274.7 412"><defs><linearGradient id="a" x1="0%" y1="0%" y2="0%"><stop offset="0%" stop-color="#8ceabb"/><stop offset="100%" stop-color="#378f7b"/></linearGradient></defs><path fill="url(#a)" d="M215 214.9c-83.6 123.5-137.3 200.8-137.3 275.9 0 75.2 61.4 136.1 137.3 136.1s137.3-60.9 137.3-136.1c0-75.1-53.7-152.4-137.3-275.9z"/></svg>
-      <h2 class="title">
-        grauth
-      </h2>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="site__logo"
+        width="56"
+        height="84"
+        viewBox="77.7 214.9 274.7 412"
+      >
+        <defs>
+          <linearGradient id="a" x1="0%" y1="0%" y2="0%">
+            <stop offset="0%" stop-color="#8ceabb" />
+            <stop offset="100%" stop-color="#378f7b" />
+          </linearGradient>
+        </defs>
+        <path
+          fill="url(#a)"
+          d="M215 214.9c-83.6 123.5-137.3 200.8-137.3 275.9 0 75.2 61.4 136.1 137.3 136.1s137.3-60.9 137.3-136.1c0-75.1-53.7-152.4-137.3-275.9z"
+        />
+      </svg>
+      <h2 class="title">grauth</h2>
 
-      <form @submit.prevent="handleFormSubmit" action="" method="post" class="form">
+      <form
+        @submit.prevent="handleFormSubmit"
+        action=""
+        method="post"
+        class="form"
+      >
         <div class="form__field">
-          <input type="email" placeholder="info@mailaddress.com" name="email" v-model="email">
+          <input
+            type="email"
+            placeholder="info@mailaddress.com"
+            name="email"
+            v-model="email"
+          />
         </div>
 
         <div class="form__field">
-          <input type="password" name="password" placeholder="password" v-model="password">
+          <input
+            type="password"
+            name="password"
+            placeholder="password"
+            v-model="password"
+          />
         </div>
 
-        <div v-if="mode =='signup'" class="form__field">
-          <input type="text" name="username" placeholder="username" v-model="username">
+        <div v-if="mode == 'signup'" class="form__field">
+          <input
+            type="text"
+            name="username"
+            placeholder="username"
+            v-model="username"
+          />
         </div>
 
-        <div v-if="mode =='signup'" class="form__field">
-          <input type="text" name="phonenumber" placeholder="phonenumber" v-model="phonenumber">
+        <div v-if="mode == 'signup'" class="form__field">
+          <input
+            type="text"
+            name="phonenumber"
+            placeholder="phonenumber"
+            v-model="phonenumber"
+          />
         </div>
 
-        <div v-if="mode =='signup'" class="form__field">
-          <input type="text" name="referralCode" placeholder="referralCode" v-model="referralCode">
+        <div v-if="mode == 'signup'" class="form__field">
+          <input
+            type="text"
+            name="referralCode"
+            placeholder="referralCode"
+            v-model="referralCode"
+          />
         </div>
 
         <div class="form__field">
-          <input v-if="mode == 'login'" type="submit" value="Login">
-          <input v-if="mode == 'signup'" type="submit" value="Sign Up">
+          <input v-if="mode == 'login'" type="submit" value="Login" />
+          <input v-if="mode == 'signup'" type="submit" value="Sign Up" />
         </div>
       </form>
       <div>
-        <p v-if="mode =='login'">Don't have an account? <a @click="switchMode('signup')" href="#">Sign up</a></p>
-        <p v-if="mode =='signup'">Already have an account? <a @click="switchMode('login')" href="#">Log in</a></p>
+        <p v-if="mode == 'login'">
+          Don't have an account?
+          <a @click="switchMode('signup')" href="#">Sign up</a>
+        </p>
+        <p v-if="mode == 'signup'">
+          Already have an account?
+          <a @click="switchMode('login')" href="#">Log in</a>
+        </p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import gql from 'graphql-tag';
-
+import gql from "graphql-tag";
+import { mapMutations, mapGetters } from "vuex";
 export default {
-  name:"userform",
-  data(){
-    return{
-      email:"",
+  name: "userform",
+  data() {
+    return {
+      email: "",
       password: "",
       username: "",
-      phonenumber:"",
+      phonenumber: "",
       referralCode: "",
       phoneNumberDetails: {
         phoneNumber: "",
         callingCode: "",
-        flag: ""
-      }
-    }
+        flag: "",
+      },
+    };
   },
-  props:{
+  props: {
     mode: {
       type: String,
       required: true,
       default: () => "login",
     },
   },
-  methods:{
-    switchMode(mode){
-      if(this.mode == 'login'){
-        this.$emit("modeSwitch", this.mode)
-        console.log('switch to sign up')
-      }
-      else if(this.mode == 'signup'){
-        this.$emit("modeSwitch", this.mode)
-        console.log('switch to login')
+  methods: {
+    switchMode(mode) {
+      if (this.mode == "login") {
+        this.$emit("modeSwitch", this.mode);
+        console.log("switch to sign up");
+      } else if (this.mode == "signup") {
+        this.$emit("modeSwitch", this.mode);
+        console.log("switch to login");
       } else {
-        return null
+        return null;
       }
     },
-    handleFormSubmit(){
-      if(this.mode =='signup'){
-        this.$apollo.mutate({
-          mutation: gql`
-            mutation($data: CreateUserInput){
-              register(data: $data){
-                user {
-                  id
-                  email
-                  phonenumber
-                  phoneNumberDetails {
-                    phoneNumber
-                    callingCode
-                    flag
+    handleFormSubmit() {
+      if (this.mode == "signup") {
+        this.$apollo
+          .mutate({
+            mutation: gql`
+              mutation($data: CreateUserInput) {
+                register(data: $data) {
+                  user {
+                    id
+                    email
+                    phonenumber
+                    phoneNumberDetails {
+                      phoneNumber
+                      callingCode
+                      flag
+                    }
+                    referralCode
+                    username
+                    kycStatus
+                    active
                   }
-                  referralCode
-                  username
-                  kycStatus
-                  active
-                }
                   token
                 }
               }
-          `,
-          variables: {
-            data:{
-              email: this.email,
-              password: this.password,
-              username: this.username,
-              phonenumber: this.phonenumber,
-              referralCode: this.referralCode,
-              phoneNumberDetails: {
-                phoneNumber: this.phonenumber,
-                callingCode: "234",
-                flag: "flag"
-              }
-            }
-          }
-        }).then(response => {
-          console.log(response)
-        })
-      }
-      else if(this.mode == 'login'){
-        this.$apollo.mutate({
-          mutation: gql`
-            mutation($data: LoginInput!){
-              login(data: $data){
-                user {
-                  id
-                  email
-                  phonenumber
-                  phoneNumberDetails {
-                    phoneNumber
-                    callingCode
-                    flag
+            `,
+            variables: {
+              data: {
+                email: this.email,
+                password: this.password,
+                username: this.username,
+                phonenumber: this.phonenumber,
+                referralCode: this.referralCode,
+                phoneNumberDetails: {
+                  phoneNumber: this.phonenumber,
+                  callingCode: "234",
+                  flag: "flag",
+                },
+              },
+            },
+          })
+          .then((response) => {
+            // console.log(response);
+          });
+      } else if (this.mode == "login") {
+        this.$apollo
+          .mutate({
+            mutation: gql`
+              mutation($data: LoginInput!) {
+                login(data: $data) {
+                  user {
+                    id
+                    email
+                    phonenumber
+                    phoneNumberDetails {
+                      phoneNumber
+                      callingCode
+                      flag
+                    }
+                    referralCode
+                    username
+                    kycStatus
+                    active
                   }
-                  referralCode
-                  username
-                  kycStatus
-                  active
-                }
                   token
                 }
               }
-          `,
-          variables: {
-            data:{
-              email: this.email,
-              password: this.password
+            `,
+            variables: {
+              data: {
+                email: this.email,
+                password: this.password,
+              },
+            },
+          })
+          .then((response) => {
+            const { login } = response.data;
+            this.$store.commit("changeUser", login);
+            console.log(response);
+            if (login) {
+              this.$router.push("./protected/verify");
             }
-          }
-        }).then(response => {
-          console.log(response)
-          this.$router.push('./protected')
-        })
+          });
       }
-      
-    }
+    },
   },
-  apollo:{
-
-  }
-}
+  apollo: {},
+};
 </script>
 
 <style lang="scss">
-  .align {
+.align {
   align-items: center;
   display: flex;
   flex-direction: row;
 
   &__item {
-
     &--start {
       align-self: flex-start;
     }
@@ -179,20 +232,16 @@ export default {
     &--end {
       align-self: flex-end;
     }
-
   }
-
 }
 
 .site {
-
   &__main {
   }
 
   &__logo {
     margin-bottom: 2rem;
   }
-
 }
 
 $input-placeholder-color: #7e8ba3;
@@ -204,26 +253,22 @@ input {
   &::placeholder {
     color: $input-placeholder-color;
   }
-
 }
 
 .form {
-
   &__field {
     margin-bottom: 1rem;
   }
 
   input {
     outline: 0;
-    padding: .5rem 1rem;
+    padding: 0.5rem 1rem;
 
     &[type="email"],
     &[type="password"] {
       width: 100%;
     }
-
   }
-
 }
 
 $grid-max-width: 25rem;
@@ -251,7 +296,7 @@ svg {
 $link-color: #7e8ba3;
 
 a {
-  color: $link-color
+  color: $link-color;
 }
 
 .register {
@@ -286,8 +331,6 @@ a {
       margin-bottom: 6rem;
       width: 100%;
     }
-
   }
-
 }
 </style>
