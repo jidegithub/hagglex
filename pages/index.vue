@@ -3,31 +3,30 @@
 </template>
 
 <script>
-import Form from '../components/form'
+import Form from "../components/form";
 export default {
-  name:"index",
-  data(){
+  middleware: "notAuthenticated",
+  name: "index",
+  data() {
     return {
       mode: "login",
-      currentUser: {}
-    }
+      currentUser: {},
+    };
   },
-  components:{
-    Form
+  components: {
+    Form,
   },
-  methods:{
-    switchForm(mode){
-      if(mode == "login"){
-        this.mode = "signup"
+  methods: {
+    switchForm(mode) {
+      if (mode == "login") {
+        this.mode = "signup";
+      } else if (mode == "signup") {
+        this.mode = "login";
       }
-      else if(mode == "signup"){
-        this.mode = "login"
-      }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss">
-
 </style>

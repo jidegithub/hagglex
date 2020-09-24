@@ -1,17 +1,17 @@
 <template>
-  <VerifyForm/>
+  <VerifyForm />
 </template>
 
 <script>
-import VerifyForm from "../../components/verifyForm"
+import VerifyForm from "../../components/verifyForm";
 export default {
+  middleware: "authenticated",
   name: "verify",
-  components:{
-    VerifyForm
-  }
-}
+  components: {
+    VerifyForm,
+  },
+};
 </script>
 
 <style>
-
 </style>

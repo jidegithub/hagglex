@@ -1,18 +1,23 @@
 export const state = () => ({
   user: null,
-  accessToken: null
+  accessToken: null,
+  isAuthenticated: false
 })
 
 export const mutations = {
   changeUser(state, user) {
     state.user = user
   },
-  changeAccessToken: (state, accessToken) => {
+  changeAccessToken(state, accessToken) {
     state.accessToken = accessToken;
   },
-  logout: (state) => {
+  logout(state) {
     state.accessToken = null;
     state.user = null;
+    state.isAuthenticated = false;
+  },
+  setAuth(state, status) {
+    state.isAuthenticated = status;
   }
 }
 
@@ -31,8 +36,7 @@ export const getters = {
   userData(state) {
     return state.user;
   },
-  isAuthenticated(state) {
-    if (state.user.user && state.token)
-      return true
+  Authenticated(state) {
+    return state.isAuthenticated
   }
 }

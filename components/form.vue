@@ -235,6 +235,7 @@ export default {
             console.log(login);
             this.$store.commit("changeUser", login);
             this.$store.commit("changeAccessToken", login.token);
+            this.$store.commit("setAuth", true);
             // if (this.userData.user.active === false) {
             //   this.$router.push("./protected/verify");
             // } else {
