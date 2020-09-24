@@ -19,6 +19,7 @@
           d="M215 214.9c-83.6 123.5-137.3 200.8-137.3 275.9 0 75.2 61.4 136.1 137.3 136.1s137.3-60.9 137.3-136.1c0-75.1-53.7-152.4-137.3-275.9z"
         />
       </svg>
+      <h4 v-if="loginError" class="text-green">Invalid email or password</h4>
       <h2 class="title">grauth</h2>
 
       <form
@@ -33,6 +34,7 @@
             placeholder="info@mailaddress.com"
             name="email"
             v-model="email"
+            required
           />
         </div>
 
@@ -42,6 +44,7 @@
             name="password"
             placeholder="password"
             v-model="password"
+            required
           />
         </div>
 
@@ -60,6 +63,7 @@
             name="phonenumber"
             placeholder="phonenumber"
             v-model="phonenumber"
+            required
           />
         </div>
 
@@ -69,12 +73,24 @@
             name="referralCode"
             placeholder="referralCode"
             v-model="referralCode"
+            required
           />
         </div>
 
         <div class="form__field">
-          <input v-if="mode == 'login'" type="submit" value="Login" />
-          <input v-if="mode == 'signup'" type="submit" value="Sign Up" />
+          <input
+            v-if="mode == 'login'"
+            :disabled="disable"
+            type="submit"
+            value="Login"
+            :class="toDisable"
+          />
+          <input
+            v-if="mode == 'signup'"
+            :disabled="disable"
+            type="submit"
+            value="Sign Up"
+          />
         </div>
       </form>
       <div>
@@ -108,6 +124,8 @@ export default {
         callingCode: "",
         flag: "",
       },
+      disable: false,
+      loginError: false,
     };
   },
   props: {
@@ -117,19 +135,26 @@ export default {
       default: () => "login",
     },
   },
+  computed: {
+    ...mapGetters(["userData"]),
+    toDisable: function () {
+      return {
+        disable: this.disable,
+      };
+    },
+  },
   methods: {
     switchMode(mode) {
-      if (this.mode == "login") {
+      if (this.mode === "login") {
         this.$emit("modeSwitch", this.mode);
-        console.log("switch to sign up");
-      } else if (this.mode == "signup") {
+      } else if (this.mode === "signup") {
         this.$emit("modeSwitch", this.mode);
-        console.log("switch to login");
       } else {
         return null;
       }
     },
     handleFormSubmit() {
+      this.disable = true;
       if (this.mode == "signup") {
         this.$apollo
           .mutate({
@@ -169,10 +194,12 @@ export default {
               },
             },
           })
-          .then((response) => {
-            // console.log(response);
+          .then(() => {
+            console.log("submitted successfully");
+            this.mode = "login";
           });
       } else if (this.mode == "login") {
+        this.disable = true;
         this.$apollo
           .mutate({
             mutation: gql`
@@ -205,16 +232,37 @@ export default {
           })
           .then((response) => {
             const { login } = response.data;
+            console.log(login);
             this.$store.commit("changeUser", login);
-            console.log(response);
-            if (login) {
-              this.$router.push("./protected/verify");
-            }
+            this.$store.commit("changeAccessToken", login.token);
+            // if (this.userData.user.active === false) {
+            //   this.$router.push("./protected/verify");
+            // } else {
+            this.$router.push("./protected/protected");
+            // }
+          })
+          .catch((err) => {
+            console.log(err);
+
+            setTimeout(() => {
+              this.loginError = true;
+            }, 2000);
+            this.disable = false;
           });
       }
     },
+    resetForm() {
+      this.email = "";
+      this.password = "";
+      this.username = "";
+      this.phonenumber = "";
+      this.referralCode = "";
+      this.phoneNumberDetails.phoneNumber = "";
+      this.phoneNumberDetails.phoneNumber = "";
+      this.phoneNumberDetails.phoneNumber = "";
+      this.disable = false;
+    },
   },
-  apollo: {},
 };
 </script>
 
@@ -256,6 +304,7 @@ input {
 }
 
 .form {
+  transition: ease-in 2s;
   &__field {
     margin-bottom: 1rem;
   }
@@ -263,6 +312,7 @@ input {
   input {
     outline: 0;
     padding: 0.5rem 1rem;
+    color: #c0ccc6;
 
     &[type="email"],
     &[type="password"] {
@@ -287,6 +337,15 @@ h2 {
   text-transform: uppercase;
 }
 
+.disable {
+  background-image: linear-gradient(
+    160deg,
+    #607269 0%,
+    #3e5751 100%
+  ) !important;
+  cursor: not-allowed;
+}
+
 svg {
   height: auto;
   max-width: 100%;
@@ -308,7 +367,7 @@ a {
     border: 1px solid #242c37;
     border-radius: 999px;
     background-color: transparent;
-    text-align: center;
+    // text-align: center;
 
     &[type="email"],
     &[type="password"] {
@@ -330,7 +389,14 @@ a {
       color: #fff;
       margin-bottom: 6rem;
       width: 100%;
+
+      &:hover {
+        background-image: linear-gradient(160deg, #8ceabb 0%, #378f7b 0%);
+      }
     }
+  }
+  .text-green {
+    color: #3b8070;
   }
 }
 </style>

@@ -58,6 +58,7 @@ export default {
   computed: {
     ...mapGetters(["userData"]),
   },
+  middleware: "auth",
   methods: {
     VerifyCode() {
       this.$apollo

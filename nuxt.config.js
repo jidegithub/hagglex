@@ -2,6 +2,11 @@ export default {
   // Target (https://go.nuxtjs.dev/config-target)
   target: 'static',
 
+  router: {
+    middleware: ['auth']
+  },
+  // middleware: ["auth"],
+
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
     title: 'grauth',

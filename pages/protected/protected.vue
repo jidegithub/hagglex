@@ -1,11 +1,9 @@
 <template>
   <div class="container">
-    <Header/>
+    <Header />
     <div>
       <Logo />
-      <h1 class="title">
-        grauth
-      </h1>
+      <h1 class="title">grauth</h1>
       <div class="links">
         <a
           href="https://nuxtjs.org/"
@@ -29,14 +27,15 @@
 </template>
 
 <script>
-import Header from "../../components/header"
-import { mapGetters } from 'vuex'
+import Header from "../../components/header";
+import { mapGetters } from "vuex";
 export default {
-  name:"protected",
-  components:{
-    Header
-  }
-}
+  name: "protected",
+  components: {
+    Header,
+  },
+  middleware: "auth",
+};
 </script>
 
 <style>
@@ -50,16 +49,8 @@ export default {
 }
 
 .title {
-  font-family:
-    'Quicksand',
-    'Source Sans Pro',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    'Helvetica Neue',
-    Arial,
-    sans-serif;
+  font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   display: block;
   font-weight: 300;
   font-size: 100px;

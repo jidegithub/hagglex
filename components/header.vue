@@ -4,7 +4,7 @@
       <ul>
         <li><a href=#>Home</a></li>
         <li><a href=#>Profile</a></li>
-        <li><a href=#>Log Out</a></li>
+        <li><a @click=logout href=#>Log Out</a></li>
         <a href="#" id="menu-icon"></a>
       </ul>
     </nav>
@@ -12,8 +12,14 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 export default {
-
+  name:"header-nav",
+  methods: {
+    ...mapActions([
+      'logout'
+    ])
+  },
 }
 </script>
 
