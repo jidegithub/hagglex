@@ -20,6 +20,7 @@
         />
       </svg>
       <h4 v-if="loginError" class="text-green">Invalid email or password</h4>
+      <h4 v-if="mode == 'signup'">{{ notificationMsg }}</h4>
       <h2 class="title">grauth</h2>
 
       <form
@@ -96,11 +97,11 @@
       <div>
         <p v-if="mode == 'login'">
           Don't have an account?
-          <a @click="switchMode('signup')" href="#">Sign up</a>
+          <a @click="switchMode('signup')" href="">Sign up</a>
         </p>
         <p v-if="mode == 'signup'">
           Already have an account?
-          <a @click="switchMode('login')" href="#">Log in</a>
+          <a @click="switchMode('login')" href="">Log in</a>
         </p>
       </div>
     </div>
@@ -126,6 +127,7 @@ export default {
       },
       disable: false,
       loginError: false,
+      notificationMsg: "",
     };
   },
   props: {
@@ -156,6 +158,7 @@ export default {
     handleFormSubmit() {
       this.disable = true;
       if (this.mode == "signup") {
+        this.disable = true;
         this.$apollo
           .mutate({
             mutation: gql`
@@ -194,9 +197,11 @@ export default {
               },
             },
           })
-          .then(() => {
-            console.log("submitted successfully");
-            this.mode = "login";
+          .then((response) => {
+            const { login } = response.data;
+            this.notificationMsg = "user created";
+            this.$store.commit("setAuth", true);
+            this.$router.push("./protected/verify");
           });
       } else if (this.mode == "login") {
         this.disable = true;

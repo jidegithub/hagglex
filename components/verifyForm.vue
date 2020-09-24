@@ -90,10 +90,10 @@ export default {
           },
         })
         .then((response) => {
-          // if (response.data.data) {
-          console.log(response);
-          this.$router.push("./protected/protected");
-          // }
+          if (response.data.data.login.active) {
+            console.log(response);
+            this.$router.push("./protected/protected");
+          }
         })
         .catch((err) => {
           console.log(err.message);
