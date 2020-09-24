@@ -34,8 +34,5 @@ export const getters = {
   isAuthenticated(state) {
     if (state.user.user && state.token)
       return true
-  },
-  isLoggedIn(state) {
-    return state.user
   }
 }

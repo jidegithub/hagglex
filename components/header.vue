@@ -2,9 +2,9 @@
   <div id="navigation-bar">
     <nav>
       <ul>
-        <li><a href=#>Home</a></li>
-        <li><a href=#>Profile</a></li>
-        <li><a @click=logout href=#>Log Out</a></li>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Profile</a></li>
+        <li><a @click="logout">Log Out</a></li>
         <a href="#" id="menu-icon"></a>
       </ul>
     </nav>
@@ -12,20 +12,17 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions } from "vuex";
 export default {
-  name:"header-nav",
+  name: "header-nav",
   methods: {
-    ...mapActions([
-      'logout'
-    ])
+    ...mapActions(["logout"]),
   },
-}
+};
 </script>
 
 <style lang="scss">
 nav {
-  
   ul {
     text-align: center;
     list-style-type: none;

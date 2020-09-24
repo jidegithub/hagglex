@@ -34,7 +34,7 @@ export default {
   components: {
     Header,
   },
-  middleware: "auth",
+  // middleware: "auth",
 };
 </script>
 
@@ -53,7 +53,7 @@ export default {
     "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   display: block;
   font-weight: 300;
-  font-size: 100px;
+  /* font-size: 100px; */
   color: #35495e;
   letter-spacing: 1px;
 }

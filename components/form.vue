@@ -243,10 +243,7 @@ export default {
           })
           .catch((err) => {
             console.log(err);
-
-            setTimeout(() => {
-              this.loginError = true;
-            }, 2000);
+            this.loginError = true;
             this.disable = false;
           });
       }
