@@ -19,8 +19,8 @@
           d="M215 214.9c-83.6 123.5-137.3 200.8-137.3 275.9 0 75.2 61.4 136.1 137.3 136.1s137.3-60.9 137.3-136.1c0-75.1-53.7-152.4-137.3-275.9z"
         />
       </svg>
-      <h4 v-if="loginError" class="text-green">Invalid email or password</h4>
-      <h4 v-if="mode == 'signup'">{{ notificationMsg }}</h4>
+      <h4 v-if="mode == 'login'" class="text-green">{{ notificationMsg }}</h4>
+      <h4 v-if="mode == 'signup'" class="text-green">{{ notificationMsg }}</h4>
       <h2 class="title">hagglex</h2>
 
       <form
@@ -127,7 +127,6 @@ export default {
         flag: "",
       },
       disable: false,
-      loginError: false,
       notificationMsg: "",
     };
   },
@@ -204,16 +203,12 @@ export default {
             this.$store.commit("changeUser", register);
             this.$store.commit("changeAccessToken", register.token);
             this.$store.commit("setAuth", true);
-            setTimeout(() => {
-              this.notificationMsg = "";
-              this.$router.push("/protected/verify");
-            }, 900);
+            this.$router.push("/protected/verify");
+            this.resetForm();
           })
           .catch((err) => {
             this.notificationMsg = "error creating user";
-            setTimeout(() => {
-              this.notificationMsg = "";
-            }, 1300);
+            this.disable = false;
           });
       } else if (this.mode == "login") {
         this.disable = true;
@@ -262,7 +257,10 @@ export default {
           })
           .catch((err) => {
             console.log(err);
-            this.loginError = true;
+            this.notificationMsg = err.message;
+            setTimeout(() => {
+              this.notificationMsg = "";
+            }, 2000);
             this.disable = false;
           });
       }
@@ -277,6 +275,7 @@ export default {
       this.phoneNumberDetails.phoneNumber = "";
       this.phoneNumberDetails.phoneNumber = "";
       this.disable = false;
+      this.notificationMsg = "";
     },
   },
 };

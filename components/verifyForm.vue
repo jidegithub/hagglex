@@ -64,6 +64,7 @@ export default {
   computed: {
     ...mapGetters(["userData"]),
   },
+
   methods: {
     ...mapActions(["logout"]),
     VerifyCode() {
