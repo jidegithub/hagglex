@@ -21,7 +21,7 @@
       </svg>
       <h4 v-if="loginError" class="text-green">Invalid email or password</h4>
       <h4 v-if="mode == 'signup'">{{ notificationMsg }}</h4>
-      <h2 class="title">grauth</h2>
+      <h2 class="title">hagglex</h2>
 
       <form
         @submit.prevent="handleFormSubmit"

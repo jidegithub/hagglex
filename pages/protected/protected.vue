@@ -3,7 +3,7 @@
     <Header />
     <div>
       <Logo />
-      <h1 class="title">grauth</h1>
+      <h1 class="title">hagglex</h1>
       <div class="links">
         <a
           href="https://nuxtjs.org/"
