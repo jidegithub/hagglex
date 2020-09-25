@@ -33,6 +33,7 @@ export const actions = {
     localStorage.removeItem('Authenticated');
     localStorage.removeItem('user');
     localStorage.removeItem('token');
+    this.$apolloHelpers.onLogout();
     commit('logout');
     this.$router.push('/');
   },
