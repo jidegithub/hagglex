@@ -1,3 +1,5 @@
+require("dotenv").config()
+
 export default {
   generate: {
     fallback: true,
@@ -6,6 +8,9 @@ export default {
       '/protected/protected',
       '/protected/verify'
     ]
+  },
+  env: {
+    ...process.env
   },
   // Target (https://go.nuxtjs.dev/config-target)
   target: 'static',
@@ -40,6 +45,7 @@ export default {
 
   // Modules for dev and build (recommended) (https://go.nuxtjs.dev/config-modules)
   buildModules: [
+    "@nuxtjs/dotenv"
   ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)
@@ -47,13 +53,29 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     '@nuxtjs/apollo',
+    [
+      "nuxt-vuex-localstorage",
+      {
+        localStorage: ["user", "token"],
+        mode: process.env.NODE_ENV === "development" ? "debug" : null
+      }
+    ]
   ],
   apollo: {
+    // clientConfigs: {
+    //   default: {
+    //     httpEndpoint: 'https://hagglex-backend.herokuapp.com/graphql',
+    //   }
+    // },
+    cookieAttributes: {
+      expires: 1,
+      path: "/",
+      secure: false,
+      sameSite: "Lax"
+    },
     clientConfigs: {
-      default: {
-        httpEndpoint: 'https://hagglex-backend.herokuapp.com/graphql',
-      }
-    }
+      default: '~/plugins/apollo-config-default.js'
+    },
   },
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)

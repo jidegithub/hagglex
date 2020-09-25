@@ -55,6 +55,8 @@ export default {
     return {
       code: "",
       notificationMsg: "",
+      loading: false,
+      error: ""
     };
   },
   computed: {

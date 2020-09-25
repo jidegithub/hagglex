@@ -15,9 +15,11 @@
     "@nuxtjs/axios": "^5.12.2",
     "core-js": "^3.6.5",
     "graphql-tag": "^2.11.0",
-    "nuxt": "^2.14.6"
+    "nuxt": "^2.14.6",
+    "nuxt-vuex-localstorage": "^1.2.7"
   },
   "devDependencies": {
+    "@nuxtjs/dotenv": "^1.4.1",
     "@vue/test-utils": "^1.1.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^26.3.0",

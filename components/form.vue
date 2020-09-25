@@ -242,7 +242,7 @@ export default {
           })
           .then((response) => {
             const { login } = response.data;
-            console.log(login);
+            // console.log(login);
             this.$store.commit("changeUser", login);
             this.$store.commit("changeAccessToken", login.token);
             this.$store.commit("setAuth", true);
