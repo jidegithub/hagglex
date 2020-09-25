@@ -201,12 +201,19 @@ export default {
             this.disable = false;
             const { register } = response.data;
             this.notificationMsg = "user created";
+            this.$store.commit("changeUser", register);
             this.$store.commit("changeAccessToken", register.token);
             this.$store.commit("setAuth", true);
             setTimeout(() => {
               this.notificationMsg = "";
-              this.$router.push("./protected/verify");
+              this.$router.push("/protected/verify");
             }, 900);
+          })
+          .catch((err) => {
+            this.notificationMsg = "error creating user";
+            setTimeout(() => {
+              this.notificationMsg = "";
+            }, 1300);
           });
       } else if (this.mode == "login") {
         this.disable = true;
@@ -245,12 +252,13 @@ export default {
             // console.log(login);
             this.$store.commit("changeUser", login);
             this.$store.commit("changeAccessToken", login.token);
+            this.$apolloHelpers.onLogin(login.token);
             this.$store.commit("setAuth", true);
-            // if (this.userData.user.active === false) {
-            //   this.$router.push("./protected/verify");
-            // } else {
-            this.$router.push("./protected/protected");
-            // }
+            if (this.userData.user.active === false) {
+              this.$router.push("/protected/verify");
+            } else {
+              this.$router.push("/protected/protected");
+            }
           })
           .catch((err) => {
             console.log(err);

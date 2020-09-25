@@ -20,7 +20,8 @@
         />
       </svg>
       <h4 v-if="notificationMsg">{{ notificationMsg }}</h4>
-      <h2 class="title">grauth</h2>
+      <p>enter the code sent to your inbox</p>
+      <h2 class="title">hagglex</h2>
 
       <form @submit.prevent="VerifyCode" action="" method="post" class="form">
         <div class="form__field">
@@ -48,7 +49,7 @@
 
 <script>
 import gql from "graphql-tag";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "verifyform",
   data() {
@@ -56,13 +57,15 @@ export default {
       code: "",
       notificationMsg: "",
       loading: false,
-      error: ""
+      error: "",
+      currentUser: "",
     };
   },
   computed: {
     ...mapGetters(["userData"]),
   },
   methods: {
+    ...mapActions(["logout"]),
     VerifyCode() {
       this.$apollo
         .mutate({
@@ -94,10 +97,15 @@ export default {
           },
         })
         .then((response) => {
-          if (response.data.data.login.active) {
-            console.log(response);
-            this.$router.push("./protected/protected");
-          }
+          this.notificationMsg = "verification successful";
+          setTimeout(() => {
+            this.logout();
+          }, 900);
+          console.log(response);
+          // if (response.data.data.verifyUser.user.active) {
+
+          // this.$router.push("/");
+          // }
         })
         .catch((err) => {
           console.log(err.message);
