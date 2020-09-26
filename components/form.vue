@@ -257,7 +257,7 @@ export default {
           })
           .catch((err) => {
             console.log(err);
-            this.notificationMsg = err.message;
+            this.notificationMsg = "incorrect username or password";
             setTimeout(() => {
               this.notificationMsg = "";
             }, 2000);

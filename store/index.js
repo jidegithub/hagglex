@@ -1,7 +1,8 @@
 export const state = () => ({
   user: null,
   accessToken: null,
-  isAuthenticated: false
+  isAuthenticated: false,
+  user_email: ""
 })
 
 export const mutations = {
@@ -11,7 +12,7 @@ export const mutations = {
   changeAccessToken(state, accessToken) {
     state.accessToken = accessToken;
     localStorage.setItem('accessToken', state.accessToken)
-    // this.$apolloHelpers.onLogin(state.accessToken);
+    this.$apolloHelpers.onLogin(state.accessToken);
   },
   logout(state) {
     state.accessToken = null;
