@@ -138,7 +138,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["userData"]),
+    ...mapGetters(["currentUser"]),
     toDisable: function () {
       return {
         disable: this.disable,
@@ -154,6 +154,48 @@ export default {
       } else {
         return null;
       }
+    },
+    getCurrentUser() {
+      this.$apollo
+        .query({
+          query: gql`
+            query {
+              user {
+                email
+                phonenumber
+                phoneNumberDetails {
+                  phoneNumber
+                  callingCode
+                  flag
+                }
+                referralCode
+                username
+                kycStatus
+                active
+              }
+            }
+          `,
+          variables: {
+            email: this.currentUser.email,
+            phonenumber: this.currentUser.phonenumber,
+            phoneNumberDetails: {
+              phoneNumber: this.currentUser.phoneNumberDetails.phoneNumber,
+              callingCode: this.currentUser.phoneNumberDetails.callingCode,
+              flag: this.currentUser.phoneNumberDetails.flag,
+            },
+            referralCode: this.currentUser.referralCode,
+            username: this.currentUser.username,
+            kycStatus: this.currentUser.kycStatus,
+            active: this.currentUser.active,
+          },
+        })
+        .then((response) => {
+          console.log(
+            "current user get from form",
+            response,
+            this.$apolloProvider
+          );
+        });
     },
     handleFormSubmit() {
       if (this.mode == "signup") {
@@ -203,7 +245,7 @@ export default {
             this.$store.commit("changeUser", register);
             this.$store.commit("changeAccessToken", register.token);
             this.$store.commit("setAuth", true);
-            this.$router.push("/protected/verify");
+            this.$router.push("/verify");
             this.resetForm();
           })
           .catch((err) => {
@@ -244,20 +286,21 @@ export default {
           })
           .then((response) => {
             const { login } = response.data;
-            // console.log(login);
-            this.$store.commit("changeUser", login);
-            this.$store.commit("changeAccessToken", login.token);
             this.$apolloHelpers.onLogin(login.token);
-            this.$store.commit("setAuth", true);
-            if (this.userData.user.active === false) {
-              this.$router.push("/protected/verify");
+            this.$store.commit("changeUser", login.user);
+            this.$store.commit("changeAccessToken", login.token);
+            if (this.currentUser.active === false) {
+              this.$router.push("/verify");
             } else {
-              this.$router.push("/protected/protected");
+              this.$router.push("/home");
             }
+          })
+          .then(() => {
+            this.getCurrentUser();
           })
           .catch((err) => {
             console.log(err);
-            this.notificationMsg = "incorrect username or password";
+            this.notificationMsg = `incorrect username or password${err}`;
             setTimeout(() => {
               this.notificationMsg = "";
             }, 2000);

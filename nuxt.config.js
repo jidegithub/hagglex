@@ -44,16 +44,11 @@ export default {
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: true,
 
-  // Modules for dev and build (recommended) (https://go.nuxtjs.dev/config-modules)
-  buildModules: [
-    "@nuxtjs/dotenv"
-  ],
-
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
     // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios',
-    '@nuxtjs/apollo',
+    "@nuxtjs/axios",
+    "@nuxtjs/apollo",
     [
       "nuxt-vuex-localstorage",
       {
@@ -62,12 +57,11 @@ export default {
       }
     ]
   ],
+  // Modules for dev and build (recommended) (https://go.nuxtjs.dev/config-modules)
+  buildModules: [
+    "@nuxtjs/dotenv"
+  ],
   apollo: {
-    // clientConfigs: {
-    //   default: {
-    //     httpEndpoint: 'https://hagglex-backend.herokuapp.com/graphql',
-    //   }
-    // },
     cookieAttributes: {
       expires: 1,
       path: "/",

@@ -5,7 +5,7 @@
 <script>
 import Form from "../components/form";
 export default {
-  middleware: "notAuthenticated",
+  // middleware: "authenticated",
   name: "index",
   data() {
     return {

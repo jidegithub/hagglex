@@ -58,11 +58,10 @@ export default {
       notificationMsg: "",
       loading: false,
       error: "",
-      currentUser: "",
     };
   },
   computed: {
-    ...mapGetters(["userData"]),
+    ...mapGetters(["currentUser"]),
   },
 
   methods: {
@@ -123,7 +122,7 @@ export default {
             `,
             variables: {
               data: {
-                email: this.userData.user.email,
+                email: this.currentUser.user.email,
               },
             },
           })

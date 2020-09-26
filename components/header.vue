@@ -5,7 +5,7 @@
         <li><a href="#">Home</a></li>
         <li><a href="#">Profile</a></li>
         <li><a @click="logout">Log Out</a></li>
-        <li>{{ userData.user.email }}</li>
+        <!-- <li>{{ userData.user.email }}</li> -->
         <a href="#" id="menu-icon"></a>
       </ul>
     </nav>
@@ -20,11 +20,9 @@ export default {
     ...mapActions(["logout"]),
   },
   computed: {
-    ...mapGetters(["userData"]),
+    ...mapGetters(["currentUser"]),
   },
-  mounted() {
-    console.log(this.userData);
-  },
+  mounted() {},
 };
 </script>
 
