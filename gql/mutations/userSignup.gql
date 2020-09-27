@@ -1,0 +1,44 @@
+mutation register(
+  $email: String!,
+  $username: String!,
+  $password: String!,
+  $phonenumber: String!,
+  $referralCode: String,
+  # $PhoneNumberDetailsInput: {
+  #   phoneNumber: String,
+  #   callingCode: String,
+  #   flag: String,
+  # }
+  ) {
+__typename
+register(
+  data:{
+    email: $email,
+    username: $username,
+    password: $password,
+    phonenumber: $phonenumber,
+    referralCode: $referralCode,
+    phoneNumberDetails: {
+      phoneNumber: $phoneNumber,
+      callingCode: $callingCode,
+      flag: $flag
+    }
+  }
+  ) {
+    user {
+      id
+      email
+      phonenumber
+      phoneNumberDetails {
+        phoneNumber
+        callingCode
+        flag
+      }
+      referralCode
+      username
+      kycStatus
+      active
+    }
+    token
+  }
+}

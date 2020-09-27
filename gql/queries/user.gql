@@ -1,0 +1,15 @@
+query User{
+  user{
+    email
+    phonenumber
+    phoneNumberDetails {
+      phoneNumber
+      callingCode
+      flag
+    }
+    referralCode
+    username
+    kycStatus
+    active
+  }
+}

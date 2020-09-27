@@ -1,0 +1,28 @@
+mutation VerifyUser($code: String) {
+  __typename
+  verifyUser(
+    data:{
+      code: $code
+    }
+  ) {
+    user {
+      id
+      email
+      phonenumber
+      phoneNumberDetails {
+        phoneNumber
+        callingCode
+        flag
+      }
+      referralCode
+      username
+      kycStatus
+      active
+    }
+    token
+  }
+}
+
+input VerifyUserInput {
+  code: Int!
+}

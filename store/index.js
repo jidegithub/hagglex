@@ -1,16 +1,19 @@
+import USER_SIGNUP from "~/gql/mutations/userSignup"
+import USER_LOGIN from "~/gql/mutations/userLogin"
+import USER_GET from "~/gql/queries/user"
+// import USER_VERIFY from "~/gql/mutations/userVerify"
+
 export const state = () => ({
   user: null,
   token: null
 })
 
 export const mutations = {
-  changeUser(state, user) {
+  SET_USER(state, user) {
     state.user = user
   },
-  changeAccessToken(state, token) {
+  SET_TOKEN(state, token) {
     state.token = token;
-    localStorage.setItem('token', state.token)
-    // this.$apolloHelpers.onLogin(state.token);
   },
   logout(state) {
     state.token = null;
@@ -21,6 +24,86 @@ export const mutations = {
 }
 
 export const actions = {
+  async USER_SIGNUP({ commit }, creds) {
+    const apollo = this.app.apolloProvider.defaultClient;
+
+    try {
+      let res = await apollo.mutate({
+        mutation: USER_SIGNUP,
+        variables: {
+          email: creds.email,
+          password: creds.password,
+          username: creds.username,
+          phonenumber: creds.phonenumber,
+          referralCode: creds.referralCode,
+          PhoneNumberDetailsInput: {
+            phoneNumber: creds.phonenumber,
+            callingCode: "234",
+            flag: "flag"
+          }
+        }
+      });
+    } catch (error) {
+      console.log("Sign up error", error);
+      throw error;
+      return false;
+    }
+    return res.data
+  },
+
+  async USER_LOGIN({ commit, dispatch }, creds) {
+    const apollo = this.app.apolloProvider.defaultClient;
+
+    try {
+      var res = await apollo.mutate({
+        mutation: USER_LOGIN,
+        variables: {
+          email: creds.email,
+          password: creds.password,
+        }
+      });
+    } catch (e) {
+      console.log("Login error", e);
+      throw e;
+      return false;
+    }
+
+    // Set tokens so Apollo is autheticated for future requests. Save to store for refresh token use later.
+    const auth = res.data.data;
+    commit("SET_TOKENS", {
+      // refreshToken: auth.refreshToken,
+      token: auth.token
+    });
+    await this.$apolloHelpers.onLogin(auth.token);
+
+    // Now get and save user to store
+    const user = await dispatch("USER_GET");
+    commit("SET_USER", user);
+
+    return user;
+  },
+
+  async USER_GET({ commit }) {
+    const apollo = this.app.apolloProvider.defaultClient;
+
+    try {
+      var res = await apollo.query({
+        query: USER_GET
+      });
+    } catch (e) {
+      console.log("User get error", e);
+      throw e;
+    }
+
+    return res.data.data.user;
+  },
+
+  async USER_LOGOUT({ commit }) {
+    await this.$apolloHelpers.onLogout();
+    commit("SET_TOKENS", {});
+    commit("SET_USER", {});
+  },
+
   async logout({ commit }) {
     await this.$apolloHelpers.onLogout();
     commit('logout');

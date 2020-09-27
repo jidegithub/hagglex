@@ -33,7 +33,7 @@
             type="email"
             placeholder="info@mailaddress.com"
             name="email"
-            v-model="email"
+            v-model="credential.email"
             required
           />
         </div>
@@ -43,36 +43,7 @@
             type="password"
             name="password"
             placeholder="password"
-            v-model="password"
-            required
-          />
-        </div>
-
-        <div class="form__field">
-          <input
-            type="text"
-            name="username"
-            placeholder="username"
-            v-model="username"
-          />
-        </div>
-
-        <div class="form__field">
-          <input
-            type="text"
-            name="phonenumber"
-            placeholder="phone number"
-            v-model="phonenumber"
-            required
-          />
-        </div>
-
-        <div class="form__field">
-          <input
-            type="text"
-            name="referralCode"
-            placeholder="referralCode"
-            v-model="referralCode"
+            v-model="credential.password"
             required
           />
         </div>
@@ -81,13 +52,15 @@
           <input
             :disabled="disable"
             type="submit"
-            value="Sign Up"
+            value="Login"
             :class="toDisable"
           />
         </div>
       </form>
       <div>
-        <p>Already have an account? <nuxt-link to="/">Login here</nuxt-link></p>
+        <p>
+          Don't have an account? <nuxt-link to="/signup">Signup here</nuxt-link>
+        </p>
       </div>
     </div>
   </div>
@@ -100,15 +73,9 @@ export default {
   name: "userform",
   data() {
     return {
-      email: "",
-      password: "",
-      username: "",
-      phonenumber: "",
-      referralCode: "",
-      phoneNumberDetails: {
-        phoneNumber: "",
-        callingCode: "",
-        flag: "",
+      credential: {
+        email: "",
+        password: "",
       },
       disable: false,
       notificationMsg: "",
@@ -167,75 +134,28 @@ export default {
     },
     async handleFormSubmit() {
       this.disable = true;
-      // this.$apollo
-      //   .mutate({
-      //     mutation: gql`
-      //       mutation($data: CreateUserInput) {
-      //         register(data: $data) {
-      //           user {
-      //             id
-      //             email
-      //             phonenumber
-      //             phoneNumberDetails {
-      //               phoneNumber
-      //               callingCode
-      //               flag
-      //             }
-      //             referralCode
-      //             username
-      //             kycStatus
-      //             active
-      //           }
-      //           token
-      //         }
-      //       }
-      //     `,
-      //     variables: {
-      //       data: {
-      //         email: this.email,
-      //         password: this.password,
-      //         username: this.username,
-      //         phonenumber: this.phonenumber,
-      //         referralCode: this.referralCode,
-      //         phoneNumberDetails: {
-      //           phoneNumber: this.phonenumber,
-      //           callingCode: "234",
-      //           flag: "flag",
-      //         },
-      //       },
-      //     },
-      //   })
+
       const credentials = {
-        email: this.email,
-        password: this.password,
-        username: this.username,
-        phonenumber: this.phonenumber,
-        referralCode: this.referralCode,
-        phoneNumberDetails: {
-          phoneNumber: this.phonenumber,
-          callingCode: "",
-          flag: "",
-        },
+        email: this.credential.email,
+        password: this.credential.password,
       };
 
       try {
-        this.disable = false;
+        await this.$store.dispatch("USER_LOGIN", credentials);
+
         this.resetForm();
-        await this.$store.dispatch("USER_SIGNUP", credentials);
-      } catch (error) {
-        this.notificationMsg = "error creating user";
+      } catch (err) {
+        console.log(err);
+        this.notificationMsg = `incorrect username or password${err}`;
+        setTimeout(() => {
+          this.notificationMsg = "";
+        }, 2000);
         this.disable = false;
       }
     },
     resetForm() {
       this.email = "";
       this.password = "";
-      this.username = "";
-      this.phonenumber = "";
-      this.referralCode = "";
-      this.phoneNumberDetails.phoneNumber = "";
-      this.phoneNumberDetails.phoneNumber = "";
-      this.phoneNumberDetails.phoneNumber = "";
       this.disable = false;
       this.notificationMsg = "";
     },
