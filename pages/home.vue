@@ -27,10 +27,10 @@
 </template>
 
 <script>
-import Header from "../components/header";
+import Header from "../components/Header";
 import { mapGetters } from "vuex";
 export default {
-  middleware: "authenticated",
+  middleware: ["authenticated"],
   name: "home",
   components: {
     Header,

@@ -1,11 +1,12 @@
 <template>
-  <Form :mode="mode" @modeSwitch="switchForm" />
+  <div>
+    <Login />
+  </div>
 </template>
 
 <script>
-import Form from "../components/form";
+import Login from "../components/Login";
 export default {
-  middleware: "authenticated",
   name: "index",
   data() {
     return {
@@ -13,17 +14,9 @@ export default {
     };
   },
   components: {
-    Form,
+    Login,
   },
-  methods: {
-    switchForm(mode) {
-      if (mode == "login") {
-        this.mode = "signup";
-      } else if (mode == "signup") {
-        this.mode = "login";
-      }
-    },
-  },
+  methods: {},
 };
 </script>
 

@@ -101,7 +101,7 @@ export default {
           setTimeout(() => {
             this.logout();
           }, 900);
-          // console.log(response);
+          console.log(response);
         })
         .catch((err) => {
           console.log(err.message);
@@ -126,7 +126,7 @@ export default {
             const { resendVerificationCode } = response.data;
             if (resendVerificationCode) {
               this.notificationMsg = "verification code sent";
-              console.log(response);
+              // console.log(response);
             }
           })
           .catch((err) => {
