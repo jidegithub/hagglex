@@ -7,7 +7,6 @@
 <script>
 import Login from "../components/login";
 export default {
-  // middleware: "authenticated",
   name: "index",
   data() {
     return {

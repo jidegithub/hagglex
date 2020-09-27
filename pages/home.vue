@@ -30,7 +30,8 @@
 import Header from "../components/header";
 import { mapGetters } from "vuex";
 export default {
-  middleware: "authenticated",
+  // middleware: "authenticated",
+  middleware: ["authenticated"],
   name: "home",
   components: {
     Header,

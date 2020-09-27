@@ -5,7 +5,8 @@
 <script>
 import VerifyForm from "../components/verifyForm";
 export default {
-  middleware: "authenticated",
+  // middleware: "authenticated",
+  middleware: ["authenticated"],
   name: "verify",
   components: {
     VerifyForm,

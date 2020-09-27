@@ -64,38 +64,38 @@ export const actions = {
       });
     } catch (e) {
       console.log("Login error", e);
-      throw e;
       return false;
     }
 
-    // Set tokens so Apollo is autheticated for future requests. Save to store for refresh token use later.
-    const auth = res.data.data;
-    commit("SET_TOKENS", {
-      // refreshToken: auth.refreshToken,
-      token: auth.token
-    });
+    // Set tokens so Apollo is authenticated for future requests. Save to store for refresh token use later.
+    const auth = res.data.login;
+    commit("SET_TOKEN", auth.token);
     await this.$apolloHelpers.onLogin(auth.token);
 
     // Now get and save user to store
-    const user = await dispatch("USER_GET");
+    const user = await dispatch("USER_GET", auth.user);
+    // console.log(user)
     commit("SET_USER", user);
 
     return user;
   },
 
-  async USER_GET({ commit }) {
+  async USER_GET({ commit }, user) {
     const apollo = this.app.apolloProvider.defaultClient;
 
     try {
       var res = await apollo.query({
-        query: USER_GET
+        query: USER_GET,
+        variables: {
+          user: user
+        }
       });
     } catch (e) {
       console.log("User get error", e);
       throw e;
     }
 
-    return res.data.data.user;
+    return res.data.user;
   },
 
   async USER_LOGOUT({ commit }) {

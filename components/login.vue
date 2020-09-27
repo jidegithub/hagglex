@@ -82,7 +82,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["currentUser"]),
+    ...mapGetters(["currentUser, currentToken"]),
     toDisable: function () {
       return {
         disable: this.disable,
@@ -134,24 +134,23 @@ export default {
     },
     async handleFormSubmit() {
       this.disable = true;
-
       const credentials = {
         email: this.credential.email,
         password: this.credential.password,
       };
 
       try {
-        await this.$store.dispatch("USER_LOGIN", credentials);
-
-        this.resetForm();
+        await this.$store.dispatch("USER_LOGIN", this.credential);
       } catch (err) {
         console.log(err);
         this.notificationMsg = `incorrect username or password${err}`;
         setTimeout(() => {
           this.notificationMsg = "";
         }, 2000);
-        this.disable = false;
+        this.resetForm();
       }
+      // Redirect to user authenticated route
+      this.$router.push("/home");
     },
     resetForm() {
       this.email = "";
