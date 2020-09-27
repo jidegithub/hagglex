@@ -156,46 +156,45 @@ export default {
       }
     },
     getCurrentUser() {
-      this.$apollo
-        .query({
-          query: gql`
-            query {
-              user {
-                email
-                phonenumber
-                phoneNumberDetails {
-                  phoneNumber
-                  callingCode
-                  flag
-                }
-                referralCode
-                username
-                kycStatus
-                active
+      this.$apollo.query({
+        query: gql`
+          query {
+            user {
+              email
+              phonenumber
+              phoneNumberDetails {
+                phoneNumber
+                callingCode
+                flag
               }
+              referralCode
+              username
+              kycStatus
+              active
             }
-          `,
-          variables: {
-            email: this.currentUser.email,
-            phonenumber: this.currentUser.phonenumber,
-            phoneNumberDetails: {
-              phoneNumber: this.currentUser.phoneNumberDetails.phoneNumber,
-              callingCode: this.currentUser.phoneNumberDetails.callingCode,
-              flag: this.currentUser.phoneNumberDetails.flag,
-            },
-            referralCode: this.currentUser.referralCode,
-            username: this.currentUser.username,
-            kycStatus: this.currentUser.kycStatus,
-            active: this.currentUser.active,
+          }
+        `,
+        variables: {
+          email: this.currentUser.email,
+          phonenumber: this.currentUser.phonenumber,
+          phoneNumberDetails: {
+            phoneNumber: this.currentUser.phoneNumberDetails.phoneNumber,
+            callingCode: this.currentUser.phoneNumberDetails.callingCode,
+            flag: this.currentUser.phoneNumberDetails.flag,
           },
-        })
-        .then((response) => {
-          console.log(
-            "current user get from form",
-            response,
-            this.$apolloProvider
-          );
-        });
+          referralCode: this.currentUser.referralCode,
+          username: this.currentUser.username,
+          kycStatus: this.currentUser.kycStatus,
+          active: this.currentUser.active,
+        },
+      });
+      // .then((response) => {
+      //   console.log(
+      //     "current user get from form",
+      //     response,
+      //     this.$apolloProvider
+      //   );
+      // });
     },
     handleFormSubmit() {
       if (this.mode == "signup") {

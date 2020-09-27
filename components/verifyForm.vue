@@ -101,18 +101,14 @@ export default {
           setTimeout(() => {
             this.logout();
           }, 900);
-          console.log(response);
-          // if (response.data.data.verifyUser.user.active) {
-
-          // this.$router.push("/");
-          // }
+          // console.log(response);
         })
         .catch((err) => {
           console.log(err.message);
         });
     },
     resendVerificationCode() {
-      if (this.userData) {
+      if (this.currentUser) {
         this.$apollo
           .query({
             query: gql`
@@ -122,7 +118,7 @@ export default {
             `,
             variables: {
               data: {
-                email: this.currentUser.user.email,
+                email: this.currentUser.email,
               },
             },
           })
