@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Form from "../components//form";
+import Form from "../components/Signup";
 export default {
   name: "signup",
   components: {

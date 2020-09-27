@@ -4,9 +4,9 @@ export default {
   generate: {
     fallback: true,
     routes: [
-      '/protected/home',
-      '/protected/protected',
-      '/protected/verify'
+      '/home',
+      '/verify',
+      '/signup'
     ]
   },
   env: {

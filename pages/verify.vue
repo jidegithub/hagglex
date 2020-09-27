@@ -3,9 +3,8 @@
 </template>
 
 <script>
-import VerifyForm from "../components/verifyForm";
+import VerifyForm from "../components/Verify";
 export default {
-  // middleware: "authenticated",
   middleware: ["authenticated"],
   name: "verify",
   components: {

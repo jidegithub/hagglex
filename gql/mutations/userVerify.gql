@@ -1,4 +1,4 @@
-mutation VerifyUser($code: String) {
+mutation VerifyUser($code: Int) {
   __typename
   verifyUser(
     data:{
@@ -21,8 +21,4 @@ mutation VerifyUser($code: String) {
     }
     token
   }
-}
-
-input VerifyUserInput {
-  code: Int!
 }

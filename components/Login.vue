@@ -82,7 +82,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["currentUser, currentToken"]),
+    ...mapGetters(["currentUser"]),
     toDisable: function () {
       return {
         disable: this.disable,
@@ -149,8 +149,12 @@ export default {
         }, 2000);
         this.resetForm();
       }
-      // Redirect to user authenticated route
-      this.$router.push("/home");
+      if (this.currentUser.active) {
+        // Redirect to user authenticated route
+        this.$router.push("/home");
+      } else {
+        this.$router.push("/verify");
+      }
     },
     resetForm() {
       this.email = "";

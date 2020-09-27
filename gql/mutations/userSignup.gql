@@ -1,10 +1,5 @@
-mutation register(
-  $email: String!,
-  $username: String!,
-  $password: String!,
-  $phonenumber: String!,
-  $referralCode: String,
-  # $PhoneNumberDetailsInput: {
+mutation register($email: String!,$username: String!,$password: String!,$phonenumber: String!,$referralCode: String,
+  # $PhoneNumberDetailsInput:{
   #   phoneNumber: String,
   #   callingCode: String,
   #   flag: String,

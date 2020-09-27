@@ -97,7 +97,7 @@
 import gql from "graphql-tag";
 import { mapMutations, mapGetters } from "vuex";
 export default {
-  name: "userform",
+  name: "signupform",
   data() {
     return {
       email: "",
@@ -123,88 +123,8 @@ export default {
     },
   },
   methods: {
-    getCurrentUser() {
-      this.$apollo
-        .query({
-          query: gql`
-            query {
-              user {
-                email
-                phonenumber
-                phoneNumberDetails {
-                  phoneNumber
-                  callingCode
-                  flag
-                }
-                referralCode
-                username
-                kycStatus
-                active
-              }
-            }
-          `,
-          variables: {
-            email: this.currentUser.email,
-            phonenumber: this.currentUser.phonenumber,
-            phoneNumberDetails: {
-              phoneNumber: this.currentUser.phoneNumberDetails.phoneNumber,
-              callingCode: this.currentUser.phoneNumberDetails.callingCode,
-              flag: this.currentUser.phoneNumberDetails.flag,
-            },
-            referralCode: this.currentUser.referralCode,
-            username: this.currentUser.username,
-            kycStatus: this.currentUser.kycStatus,
-            active: this.currentUser.active,
-          },
-        })
-        .then((response) => {
-          console.log(
-            "current user get from form",
-            response,
-            this.$apolloProvider
-          );
-        });
-    },
     async handleFormSubmit() {
       this.disable = true;
-      // this.$apollo
-      //   .mutate({
-      //     mutation: gql`
-      //       mutation($data: CreateUserInput) {
-      //         register(data: $data) {
-      //           user {
-      //             id
-      //             email
-      //             phonenumber
-      //             phoneNumberDetails {
-      //               phoneNumber
-      //               callingCode
-      //               flag
-      //             }
-      //             referralCode
-      //             username
-      //             kycStatus
-      //             active
-      //           }
-      //           token
-      //         }
-      //       }
-      //     `,
-      //     variables: {
-      //       data: {
-      //         email: this.email,
-      //         password: this.password,
-      //         username: this.username,
-      //         phonenumber: this.phonenumber,
-      //         referralCode: this.referralCode,
-      //         phoneNumberDetails: {
-      //           phoneNumber: this.phonenumber,
-      //           callingCode: "234",
-      //           flag: "flag",
-      //         },
-      //       },
-      //     },
-      //   })
       const credentials = {
         email: this.email,
         password: this.password,
